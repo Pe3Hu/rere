@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/tile.png" type="Texture" id=1]
+
+[node name="Cell" type="TextureRect"]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 26.0
+margin_bottom = 26.0
+texture = ExtResource( 1 )
