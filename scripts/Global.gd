@@ -7,6 +7,7 @@ var array = {}
 var scene = {}
 var node = {}
 var ui = {}
+var obj = {}
 var flag = {}
 var data = {}
 
@@ -24,6 +25,12 @@ func init_primary_key():
 
 func init_shapes():
 	list.shapes = {
+		"1": {
+			"i": [0]
+			},
+		"2": {
+			"i": [0,1]
+			},
 		"3": {
 			"i": [0,1,2],
 			"v": [0,1,5]
@@ -58,6 +65,17 @@ func init_shapes():
 			"Z": [0,5,6,7,12]
 			}
 		}
+	list.color = {
+		"1": {
+			"i": [0,1,0]
+			},
+		"2": {
+			"i": [0,1,0]
+			}
+		}
+	list.layer = {} 
+	list.layer.names = ["mob","projectile","pause"]
+	list.layer.current = 0
 
 func init_list():
 	init_window_size()
@@ -65,28 +83,40 @@ func init_list():
 	init_shapes()
 
 func init_array():
-	pass
+	array.figure = []
 
 func init_scene():
-	scene.Shape = preload("res://scenes/Shape.tscn")
 	scene.Cell = preload("res://scenes/Cell.tscn")
+	scene.Shape = preload("res://scenes/Shape.tscn")
+	scene.Projectile = preload("res://scenes/Projectile.tscn")
+	scene.Field = preload("res://scenes/Field.tscn")
 
 func init_node():
 	node.TimeBar = get_node("/root/Game/TimeBar") 
+	node.Game = get_node("/root/Game") 
+	node.Projectiles = get_node("/root/Game/Projectiles") 
+	
+func init_obj():
+	obj.field = {}
 	ui.bar = []
 
 func init_data():
 	data.size = {}
 	data.size.bar = Vector2(91,30)
+	data.size.field = Vector2(5,10)
+	data.size.tile = Vector2(26,26)
+	data.size.projectile = Vector2(64,65)
 
 func init_flag():
 	flag.ready = false
+	flag.generate = true
 
 func _ready():
 	init_list()
 	init_array()
 	init_scene()
 	init_node()
+	init_obj()
 	init_data()
 	init_flag()
 
@@ -95,3 +125,6 @@ func add_child_node(parent_node_path_,child_node_):
 	#child_node_.global_transform = global_transform
 	var p = get_node(parent_node_path_)
 	var parent_node = get_node(parent_node_path_).add_child(child_node_)
+	
+func set_node_link(node, path):
+	Global.node.Field = get_node("/root/Game/Field") 

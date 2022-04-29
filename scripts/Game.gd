@@ -7,21 +7,19 @@ var args0 = []
 var args1 = []
 
 func _ready():
-	var shape = Global.scene.Shape.instance()
-	var cell = Global.scene.Cell.instance()
-	var count = n*n-1
 	
-	for _i in count:
-		shape.add_child(cell.duplicate())
+	var figure = Classes.Figure.new({})
+	Global.array.figure.append(figure)
+	
+	Global.obj.field = Classes.Field.new({})
 	
 	for _i in Global.list.shapes.keys():
 		for _j in Global.list.shapes[_i].keys():
 			args0.append(_i)
 			args1.append(_j)
 
-	shape.rect_position = Global.list.window_size.center
-	add_child(shape)
-	pass
+	Global.array.figure[0].node.shape.rect_position.y = Global.list.window_size.center.y
+	Global.node.Field.rect_position.x = Global.list.window_size.center.x
 
 func _process(delta):
 	pass
@@ -31,20 +29,27 @@ func _on_Timer_timeout():
 	if Global.node.TimeBar.value >= Global.node.TimeBar.max_value:
 		Global.node.TimeBar.value -= Global.node.TimeBar.max_value
 		
-		var shape = get_node("Shape")
+		Global.list.layer.current += 1
 		
-		for _i in  n*n-1:
-			var cell_ = shape.get_child(_i)
-			var m = cell_.get_modulate()
-			m.a = 0
-			cell_.set_modulate(m)
+		if Global.list.layer.current >= Global.list.layer.names.size():
+			Global.list.layer.current = 0
 			
-		for _i in Global.list.shapes[args0[i]][args1[i]]:
-			var cell_ = shape.get_child(_i)
-			var m = cell_.get_modulate()
-			m.a = 1
-			cell_.set_modulate(m)
+		Global.obj.field.set_all()
+		Global.obj.field.draw_all()
+		
+		if Global.flag.generate:
+			for _i in 2:
+				Global.obj.field.generate_mob()
+			#Global.flag.generate = false
 			
+			for _i in 3:
+				Global.obj.field.generate_projectile()
+		else:
+			Global.flag.generate = true
+		
+		
+		Global.array.figure[0].set_shape(args0[i],args1[i])
+		
 		i += 1
 		
 		if i >= args0.size():
